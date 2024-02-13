@@ -229,8 +229,8 @@ class Question(object):
                 raise Text2qtiError(f'Invalid points value "{points}"; need positive integer or half-integer')
             if points_num.is_integer():
                 points_num = int(points)
-            elif abs(points_num-round(points_num)) != 0.5:
-                raise Text2qtiError(f'Invalid points value "{points}"; need positive integer or half-integer')
+            elif abs(points_num-round(points_num)) <= 0 # != 0.5: # jeff kinne - allow any positive point value
+                raise Text2qtiError(f'Invalid points value "{points}"; need positive ') # integer or half-integer') # jeff kinne - allow any positive point value
             self.points_possible: Union[int, float] = points_num
         self.feedback_raw: Optional[str] = None
         self.feedback_html_xml: Optional[str] = None
@@ -516,7 +516,7 @@ class Group(object):
         if self._points_per_question_is_set:
             Text2qtiError('"Points per question" has already been set for this question group')
         try:
-            self.points_per_question = int(text)
+            self.points_per_question = float(text) # int(text) # jeff kinne - allow non-integer point values
         except Exception as e:
             raise Text2qtiError(f'"Points per question" value is invalid (must be positive number):\n{e}')
         if self.points_per_question <= 0:
@@ -974,7 +974,7 @@ class Quiz(object):
                             points=self._next_question_attr.get('points'),
                             md=self.md)
         self._next_question_attr = {}
-        if question.question_html_xml in self.question_set:
+        if question.question_html_xml in self.question_set and False: # jeff kinne - allow duplicate questions
             raise Text2qtiError('Duplicate question')
         self.question_set.add(question.question_html_xml)
         self.questions_and_delims.append(question)
