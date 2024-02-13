@@ -1,3 +1,10 @@
+# Jeff Kinne's fork
+
+This fork of text2qti has a few changes to allow some things that the main project does not allow:
+* questions with point values that are not integers.
+* repeating the same question on a quiz (the same question might be included more than once to balance the chances of getting different questions when picking randomly out of a group).
+These changes are marked with a comment "jeff kinne" in the source code (all in quiz.py as of 13 Feb 2024).
+
 # text2qti – Create quizzes in QTI format from Markdown-based plain text
 
 text2qti converts
